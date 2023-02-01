@@ -1,0 +1,15 @@
+version: '3.6'
+
+services:
+  mysql-db:
+    image: mysql:8.0.22
+    container_name: mysql-drone
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: drone
+    ports:
+      - 3306:3306
+    networks:
+      - dev_network
+networks:
+  dev_network:
