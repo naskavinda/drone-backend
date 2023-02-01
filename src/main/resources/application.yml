@@ -1,0 +1,11 @@
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: create
+  datasource:
+    url: jdbc:mysql://localhost:3306/drone
+    username: root
+    password: password
+  sql:
+    init:
+      mode: always
