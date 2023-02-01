@@ -25,7 +25,7 @@ public class Drone {
     private DroneState droneState;
 
     @OneToMany(mappedBy = "drone")
-    Set<DroneHasMedication> droneHasMedications;
+    Set<DeliveryDetails> deliveryDetails;
 
     private static class DroneModelConverter implements AttributeConverter<DroneModel, Integer> {
         @Override

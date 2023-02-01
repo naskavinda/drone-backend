@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class DroneHasMedication {
+public class DeliveryDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

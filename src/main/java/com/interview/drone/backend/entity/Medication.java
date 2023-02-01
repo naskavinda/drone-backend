@@ -23,5 +23,5 @@ public class Medication {
     private String imageUrl;
 
     @OneToMany(mappedBy = "medication")
-    Set<DroneHasMedication> droneHasMedications;
+    Set<DeliveryDetails> deliveryDetails;
 }
