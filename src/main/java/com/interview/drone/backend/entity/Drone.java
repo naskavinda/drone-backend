@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigInteger;
 import java.util.Set;
 
 @Entity
@@ -16,7 +17,8 @@ public class Drone {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long serialNumber;
+    @Column(length = 100)
+    private BigInteger serialNumber;
     @Convert(converter = DroneModelConverter.class)
     private DroneModel droneModel;
     private double weightLimitInGram;
