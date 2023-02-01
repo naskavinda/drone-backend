@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Set;
+
 @Entity
 @Table
 @Data
@@ -19,4 +21,7 @@ public class Medication {
     private double weight;
     private String code;
     private String imageUrl;
+
+    @OneToMany(mappedBy = "medication")
+    Set<DroneHasMedication> droneHasMedications;
 }

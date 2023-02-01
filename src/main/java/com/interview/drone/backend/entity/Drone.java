@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Set;
+
 @Entity
 @Table
 @Data
@@ -21,6 +23,9 @@ public class Drone {
     private int batteryCapacity;
     @Convert(converter = DroneStateConverter.class)
     private DroneState droneState;
+
+    @OneToMany(mappedBy = "drone")
+    Set<DroneHasMedication> droneHasMedications;
 
     private static class DroneModelConverter implements AttributeConverter<DroneModel, Integer> {
         @Override
