@@ -14,7 +14,7 @@ public class Medication {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private int medicationId;
     private String name;
     private double weight;
     private String code;
