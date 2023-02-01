@@ -1,5 +1,6 @@
 package com.interview.drone.backend.entity;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -21,7 +22,7 @@ public class Medication {
     private double weight;
     private String code;
     private String imageUrl;
-
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     @OneToMany(mappedBy = "medication")
     Set<DeliveryDetails> deliveryDetails;
 }

@@ -1,5 +1,6 @@
 package com.interview.drone.backend.entity;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -23,7 +24,7 @@ public class Drone {
     private int batteryCapacity;
     @Convert(converter = DroneStateConverter.class)
     private DroneState droneState;
-
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     @OneToMany(mappedBy = "drone")
     Set<DeliveryDetails> deliveryDetails;
 
