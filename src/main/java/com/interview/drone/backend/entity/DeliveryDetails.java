@@ -23,7 +23,7 @@ public class DeliveryDetails {
     private Drone drone;
 
     @ManyToOne
-    @JoinColumn(name = "medicationId")
+    @JoinColumn(name = "code")
     private Medication medication;
 
     private LocalDateTime orderDateTime;

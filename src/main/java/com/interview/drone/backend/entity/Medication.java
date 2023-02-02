@@ -19,8 +19,10 @@ import java.util.Set;
 public class Medication {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int medicationId;
+    @Pattern(regexp = "", message = "Code can have only upper case letters, underscore(_) and numbers")
+    @NotBlank(message = "Code can not be Blank")
+    @NotNull(message = "Code can not be Null")
+    private String code;
 
     @Pattern(regexp = "", message = "Name can have only upper case letters, dash(-), underscore(_) and numbers")
     @NotBlank(message = "Name can not be Blank")
@@ -28,11 +30,6 @@ public class Medication {
     private String name;
 
     private double weight;
-
-    @Pattern(regexp = "", message = "Code can have only upper case letters, underscore(_) and numbers")
-    @NotBlank(message = "Code can not be Blank")
-    @NotNull(message = "Code can not be Null")
-    private String code;
 
     @NotBlank(message = "Image can not be Blank")
     @NotNull(message = "Image can not be Null")
