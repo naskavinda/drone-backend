@@ -20,8 +20,8 @@ public class DroneController {
     }
 
     @PostMapping()
-    private ResponseEntity<String> registerDrone(@RequestBody Drone drone) {
-        String serialNumber = droneService.registerDrone(drone);
-        return ResponseEntity.ok(String.format("Drone Serial Number is %s", serialNumber));
+    private ResponseEntity<Drone> registerDrone(@RequestBody Drone drone) {
+        Drone droneResult = droneService.registerDrone(drone);
+        return ResponseEntity.ok(droneResult);
     }
 }

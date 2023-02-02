@@ -1,7 +1,8 @@
 package com.interview.drone.backend.entity;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,15 +17,28 @@ import java.util.Set;
 public class Drone {
 
     @Id
-    @Column(length = 100)
+    @Column(length = 100, unique = true)
+    @Size(max = 100, message = "Serial Number max length is 100")
+    @NotBlank(message = "Serial Number can not be Blank")
+    @NotNull(message = "Serial Number can not be Null")
     private String serialNumber;
+
     @Convert(converter = DroneModelConverter.class)
+    @NotNull(message = "Drone Model can not be Null")
     private DroneModel droneModel;
+
+    @Max(value = 500, message = "Weight limit max value is 500g")
     private double weightLimitInGram;
+
+    @Max(value = 100, message = "Battery Capacity max value is 100")
+    @Min(value = 0, message = "Battery Capacity min value is 0")
     private int batteryCapacity;
+
     @Convert(converter = DroneStateConverter.class)
+    @NotNull(message = "Drone State can not be Null")
     private DroneState droneState;
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+
+    @JsonIgnore
     @OneToMany(mappedBy = "drone")
     Set<DeliveryDetails> deliveryDetails;
 
