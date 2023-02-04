@@ -3,12 +3,12 @@ package com.interview.drone.backend.service;
 import com.interview.drone.backend.dto.DroneResponse;
 import com.interview.drone.backend.dto.LoadDroneRequest;
 import com.interview.drone.backend.dto.LoadedMedicationResponse;
-import com.interview.drone.backend.entity.Drone;
+import com.interview.drone.backend.dto.RegisterDroneRequest;
 
 import java.util.List;
 
 public interface DroneService {
-    Drone registerDrone(Drone drone);
+    DroneResponse registerDrone(RegisterDroneRequest drone);
 
     void loadMedicationToDrone(LoadDroneRequest loadDrone);
 

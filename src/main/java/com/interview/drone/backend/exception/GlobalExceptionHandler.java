@@ -7,11 +7,12 @@ import lombok.Builder;
 import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.StreamSupport;
@@ -27,7 +28,6 @@ public class GlobalExceptionHandler {
                         ValidationError.builder()
                                 .field(
                                         StreamSupport.stream(violation.getPropertyPath().spliterator(), false)
-                                                .peek(node -> System.out.println(node.getKind() + " --------- " + node.getName()))
                                                 .map(Path.Node::getName)
                                                 .findAny()
                                                 .orElse("null"))
@@ -40,7 +40,13 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Map<String, String>> handleMethodArgumentNotValidError(MethodArgumentNotValidException exception) {
-        return ResponseEntity.badRequest().body(Map.of("error", exception.getLocalizedMessage()));
+        Map<String, String> errors = new HashMap<>();
+        exception.getBindingResult().getAllErrors().forEach((error) -> {
+            String fieldName = ((FieldError) error).getField();
+            String errorMessage = error.getDefaultMessage();
+            errors.put(fieldName, errorMessage);
+        });
+        return ResponseEntity.badRequest().body(errors);
     }
 
     @ExceptionHandler(HttpMessageNotReadableException.class)

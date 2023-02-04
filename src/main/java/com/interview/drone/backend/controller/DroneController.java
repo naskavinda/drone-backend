@@ -3,10 +3,11 @@ package com.interview.drone.backend.controller;
 import com.interview.drone.backend.dto.DroneResponse;
 import com.interview.drone.backend.dto.LoadDroneRequest;
 import com.interview.drone.backend.dto.LoadedMedicationResponse;
-import com.interview.drone.backend.entity.Drone;
+import com.interview.drone.backend.dto.RegisterDroneRequest;
 import com.interview.drone.backend.service.DroneService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,8 +24,8 @@ public class DroneController {
     }
 
     @PostMapping()
-    private ResponseEntity<Drone> registerDrone(@Valid @RequestBody Drone drone) {
-        Drone droneResult = droneService.registerDrone(drone);
+    private ResponseEntity<DroneResponse> registerDrone(@Validated @RequestBody RegisterDroneRequest drone) {
+        DroneResponse droneResult = droneService.registerDrone(drone);
         return ResponseEntity.ok(droneResult);
     }
 

@@ -1,13 +1,13 @@
 package com.interview.drone.backend.service.impl;
 
-import com.interview.drone.backend.dto.DroneResponse;
-import com.interview.drone.backend.dto.LoadDroneRequest;
-import com.interview.drone.backend.dto.LoadedMedicationResponse;
-import com.interview.drone.backend.dto.MedicationRequest;
+import com.interview.drone.backend.dto.*;
 import com.interview.drone.backend.entity.*;
-import com.interview.drone.backend.repository.*;
+import com.interview.drone.backend.repository.DeliveryDetailsRepository;
+import com.interview.drone.backend.repository.DeliveryRepository;
+import com.interview.drone.backend.repository.DroneRepository;
 import com.interview.drone.backend.service.DroneService;
-import com.interview.drone.backend.service.impl.validation.*;
+import com.interview.drone.backend.service.impl.validation.LoadDroneChainResponse;
+import com.interview.drone.backend.service.impl.validation.LoadDroneValidator;
 import jakarta.transaction.Transactional;
 import jakarta.validation.ValidationException;
 import org.springframework.stereotype.Service;
@@ -35,14 +35,24 @@ public class DroneServiceImpl implements DroneService {
     }
 
     @Override
-    public Drone registerDrone(Drone drone) {
-        boolean droneIsAlreadyPresent = droneRepository.findById(drone.getSerialNumber()).isPresent();
+    public DroneResponse registerDrone(RegisterDroneRequest registerDroneRequest) {
+        boolean droneIsAlreadyPresent = droneRepository.findById(registerDroneRequest.getSerialNumber()).isPresent();
         if (droneIsAlreadyPresent) {
             throw new ValidationException("Drone is already exist");
         }
-        drone.setDroneState(DroneState.IDLE);
-        return droneRepository.save(drone);
+        Drone drone = Drone.builder()
+                .serialNumber(registerDroneRequest.getSerialNumber())
+                .batteryCapacity(registerDroneRequest.getBatteryCapacity())
+                .droneModel(registerDroneRequest.getDroneModel())
+                .weightLimitInGram(registerDroneRequest.getWeightLimitInGram())
+                .droneState(DroneState.IDLE)
+                .build();
+
+        Drone savedDrone = droneRepository.save(drone);
+
+        return mapToDroneResponse(savedDrone);
     }
+
 
     @Override
     @Transactional()
@@ -100,13 +110,7 @@ public class DroneServiceImpl implements DroneService {
         List<DroneState> availableDroneStateList = List.of(DroneState.IDLE, DroneState.LOADING);
         List<Drone> droneList = droneRepository.findByDroneStateIn(availableDroneStateList);
         return droneList.stream()
-                .map(drone -> DroneResponse.builder()
-                        .serialNumber(drone.getSerialNumber())
-                        .droneModel(drone.getDroneModel())
-                        .droneState(drone.getDroneState())
-                        .batteryCapacity(drone.getBatteryCapacity())
-                        .weightLimit(drone.getWeightLimitInGram())
-                        .build())
+                .map(DroneServiceImpl::mapToDroneResponse)
                 .toList();
     }
 
@@ -122,6 +126,16 @@ public class DroneServiceImpl implements DroneService {
                 .filter(medication -> Objects.equals(medication.getCode(), medicationRequest.getMedicationCode()))
                 .findFirst()
                 .get();
+    }
+
+    private static DroneResponse mapToDroneResponse(Drone savedDrone) {
+        return DroneResponse.builder()
+                .serialNumber(savedDrone.getSerialNumber())
+                .droneModel(savedDrone.getDroneModel())
+                .droneState(savedDrone.getDroneState())
+                .batteryCapacity(savedDrone.getBatteryCapacity())
+                .weightLimit(savedDrone.getWeightLimitInGram())
+                .build();
     }
 
 }
