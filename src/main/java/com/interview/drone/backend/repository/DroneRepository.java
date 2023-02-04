@@ -9,5 +9,5 @@ import java.util.List;
 
 @Repository
 public interface DroneRepository extends JpaRepository<Drone, String> {
-    List<Drone> findByDroneStateIn(List<DroneState> loadedDroneStates);
+    List<Drone> findByDroneStateInAndBatteryCapacityGreaterThan(List<DroneState> loadedDroneStates, int batteryCapacity);
 }

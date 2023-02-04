@@ -107,8 +107,8 @@ public class DroneServiceImpl implements DroneService {
 
     @Override
     public List<DroneResponse> getAvailableDrones() {
-        List<DroneState> availableDroneStateList = List.of(DroneState.IDLE, DroneState.LOADING);
-        List<Drone> droneList = droneRepository.findByDroneStateIn(availableDroneStateList);
+        List<DroneState> availableDroneStateList = List.of(DroneState.IDLE, DroneState.LOADING, DroneState.RETURNING);
+        List<Drone> droneList = droneRepository.findByDroneStateInAndBatteryCapacityGreaterThan(availableDroneStateList, 25);
         return droneList.stream()
                 .map(DroneServiceImpl::mapToDroneResponse)
                 .toList();
