@@ -1,6 +1,6 @@
 package com.interview.drone.backend.service.impl.validation;
 
-import com.interview.drone.backend.dto.LoadDroneDTO;
+import com.interview.drone.backend.dto.LoadDroneRequest;
 import jakarta.validation.ValidationException;
 import org.springframework.stereotype.Component;
 
@@ -12,12 +12,12 @@ public class BatteryLevelValidator extends LoadDroneValidator {
     public static final int ALLOWED_MIN_BATTERY_CAPACITY = 25;
 
     @Override
-    public LoadDroneChainResponse validate(LoadDroneDTO loadDroneDTO, LoadDroneChainResponse loadDroneChainResponse) {
+    public LoadDroneChainResponse validate(LoadDroneRequest loadDroneRequest, LoadDroneChainResponse loadDroneChainResponse) {
         int batteryCapacity = loadDroneChainResponse.getDrone().getBatteryCapacity();
         if (batteryCapacity < ALLOWED_MIN_BATTERY_CAPACITY) {
             throw new ValidationException("Battery level must be above 25%");
         }
-        return validateNext(loadDroneDTO, loadDroneChainResponse);
+        return validateNext(loadDroneRequest, loadDroneChainResponse);
     }
 
     @Override

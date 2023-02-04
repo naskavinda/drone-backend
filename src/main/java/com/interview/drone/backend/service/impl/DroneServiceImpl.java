@@ -1,9 +1,9 @@
 package com.interview.drone.backend.service.impl;
 
 import com.interview.drone.backend.dto.DroneResponse;
-import com.interview.drone.backend.dto.LoadDroneDTO;
+import com.interview.drone.backend.dto.LoadDroneRequest;
 import com.interview.drone.backend.dto.LoadedMedicationResponse;
-import com.interview.drone.backend.dto.MedicationDTO;
+import com.interview.drone.backend.dto.MedicationRequest;
 import com.interview.drone.backend.entity.*;
 import com.interview.drone.backend.repository.*;
 import com.interview.drone.backend.service.DroneService;
@@ -46,7 +46,7 @@ public class DroneServiceImpl implements DroneService {
 
     @Override
     @Transactional()
-    public void loadMedicationToDrone(LoadDroneDTO loadDrone) {
+    public void loadMedicationToDrone(LoadDroneRequest loadDrone) {
 
         LoadDroneValidator droneValidator = loadDroneValidators.get(0);
         List<LoadDroneValidator> validators = loadDroneValidators.stream().skip(1).toList();
@@ -63,10 +63,10 @@ public class DroneServiceImpl implements DroneService {
         Delivery deliverySaved = deliveryRepository.save(delivery);
 
         List<DeliveryDetails> deliveryDetails = loadDrone.getMedications().stream()
-                .map(medicationDTO -> DeliveryDetails.builder()
+                .map(medicationRequest -> DeliveryDetails.builder()
                         .delivery(deliverySaved)
-                        .medication(getMedication(validationResponse.getMedications(), medicationDTO))
-                        .medicationQty(medicationDTO.getMedicationQty())
+                        .medication(getMedication(validationResponse.getMedications(), medicationRequest))
+                        .medicationQty(medicationRequest.getMedicationQty())
                         .build())
                 .toList();
         deliveryDetailsRepository.saveAll(deliveryDetails);
@@ -117,9 +117,9 @@ public class DroneServiceImpl implements DroneService {
         return drone.getBatteryCapacity();
     }
 
-    private static Medication getMedication(List<Medication> medications, MedicationDTO medicationDTO) {
+    private static Medication getMedication(List<Medication> medications, MedicationRequest medicationRequest) {
         return medications.stream()
-                .filter(medication -> Objects.equals(medication.getCode(), medicationDTO.getMedicationCode()))
+                .filter(medication -> Objects.equals(medication.getCode(), medicationRequest.getMedicationCode()))
                 .findFirst()
                 .get();
     }

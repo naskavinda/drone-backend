@@ -14,7 +14,7 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class LoadDroneDTO {
+public class LoadDroneRequest {
 
     private String droneSerialNumber;
     private Integer addressId;
@@ -22,5 +22,5 @@ public class LoadDroneDTO {
     @NotNull(message = "Drone State can not be Null")
     @NotBlank(message = "Drone State can not be blank")
     private String droneState;
-    private List<MedicationDTO> medications;
+    private List<MedicationRequest> medications;
 }

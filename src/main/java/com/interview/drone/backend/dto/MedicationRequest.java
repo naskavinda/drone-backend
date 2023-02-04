@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class MedicationDTO {
+public class MedicationRequest {
     private String medicationCode;
     private double medicationQty;
 }

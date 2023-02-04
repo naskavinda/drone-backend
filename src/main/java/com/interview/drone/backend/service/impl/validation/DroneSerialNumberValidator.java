@@ -1,6 +1,6 @@
 package com.interview.drone.backend.service.impl.validation;
 
-import com.interview.drone.backend.dto.LoadDroneDTO;
+import com.interview.drone.backend.dto.LoadDroneRequest;
 import com.interview.drone.backend.entity.Drone;
 import com.interview.drone.backend.repository.DroneRepository;
 import jakarta.validation.ValidationException;
@@ -18,11 +18,11 @@ public class DroneSerialNumberValidator extends LoadDroneValidator {
     }
 
     @Override
-    public LoadDroneChainResponse validate(LoadDroneDTO loadDroneDTO, LoadDroneChainResponse loadDroneChainResponse) {
-        Drone drone = droneRepository.findById(loadDroneDTO.getDroneSerialNumber())
+    public LoadDroneChainResponse validate(LoadDroneRequest loadDroneRequest, LoadDroneChainResponse loadDroneChainResponse) {
+        Drone drone = droneRepository.findById(loadDroneRequest.getDroneSerialNumber())
                 .orElseThrow(() -> new ValidationException("Drone not found"));
         loadDroneChainResponse.setDrone(drone);
-        return validateNext(loadDroneDTO, loadDroneChainResponse);
+        return validateNext(loadDroneRequest, loadDroneChainResponse);
     }
 
     @Override

@@ -1,6 +1,6 @@
 package com.interview.drone.backend.service.impl.validation;
 
-import com.interview.drone.backend.dto.LoadDroneDTO;
+import com.interview.drone.backend.dto.LoadDroneRequest;
 import org.springframework.core.Ordered;
 import org.springframework.stereotype.Component;
 
@@ -25,12 +25,12 @@ public abstract class LoadDroneValidator implements Ordered {
         return this;
     }
 
-    public abstract LoadDroneChainResponse validate(LoadDroneDTO loadDroneDTO, LoadDroneChainResponse loadDroneChainResponse);
+    public abstract LoadDroneChainResponse validate(LoadDroneRequest loadDroneRequest, LoadDroneChainResponse loadDroneChainResponse);
 
-    protected LoadDroneChainResponse validateNext(LoadDroneDTO loadDroneDTO, LoadDroneChainResponse loadDroneChainResponse) {
+    protected LoadDroneChainResponse validateNext(LoadDroneRequest loadDroneRequest, LoadDroneChainResponse loadDroneChainResponse) {
         if (next == null) {
             return loadDroneChainResponse;
         }
-        return next.validate(loadDroneDTO, loadDroneChainResponse);
+        return next.validate(loadDroneRequest, loadDroneChainResponse);
     }
 }

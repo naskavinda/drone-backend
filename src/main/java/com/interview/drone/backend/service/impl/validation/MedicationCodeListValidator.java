@@ -1,7 +1,7 @@
 package com.interview.drone.backend.service.impl.validation;
 
-import com.interview.drone.backend.dto.LoadDroneDTO;
-import com.interview.drone.backend.dto.MedicationDTO;
+import com.interview.drone.backend.dto.LoadDroneRequest;
+import com.interview.drone.backend.dto.MedicationRequest;
 import com.interview.drone.backend.entity.Medication;
 import com.interview.drone.backend.repository.MedicationRepository;
 import jakarta.validation.ValidationException;
@@ -21,14 +21,14 @@ public class MedicationCodeListValidator extends LoadDroneValidator {
     }
 
     @Override
-    public LoadDroneChainResponse validate(LoadDroneDTO loadDroneDTO, LoadDroneChainResponse loadDroneChainResponse) {
-        List<String> medicationList = loadDroneDTO.getMedications().stream().map(MedicationDTO::getMedicationCode).toList();
+    public LoadDroneChainResponse validate(LoadDroneRequest loadDroneRequest, LoadDroneChainResponse loadDroneChainResponse) {
+        List<String> medicationList = loadDroneRequest.getMedications().stream().map(MedicationRequest::getMedicationCode).toList();
         List<Medication> medications = medicationRepository.findByCodeIn(medicationList);
-        if (medications.size() != loadDroneDTO.getMedications().size()) {
+        if (medications.size() != loadDroneRequest.getMedications().size()) {
             throw new ValidationException("Medications can not find in the Database");
         }
         loadDroneChainResponse.setMedications(medications);
-        return validateNext(loadDroneDTO, loadDroneChainResponse);
+        return validateNext(loadDroneRequest, loadDroneChainResponse);
     }
 
     @Override

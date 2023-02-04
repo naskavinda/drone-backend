@@ -1,6 +1,6 @@
 package com.interview.drone.backend.service.impl.validation;
 
-import com.interview.drone.backend.dto.LoadDroneDTO;
+import com.interview.drone.backend.dto.LoadDroneRequest;
 import com.interview.drone.backend.entity.Address;
 import com.interview.drone.backend.repository.AddressRepository;
 import jakarta.validation.ValidationException;
@@ -18,10 +18,10 @@ public class AddressIdValidator extends LoadDroneValidator{
     }
 
     @Override
-    public LoadDroneChainResponse validate(LoadDroneDTO loadDroneDTO, LoadDroneChainResponse loadDroneChainResponse) {
-        Address address = addressRepository.findById(loadDroneDTO.getAddressId()).orElseThrow(() -> new ValidationException("Can not find a Address"));
+    public LoadDroneChainResponse validate(LoadDroneRequest loadDroneRequest, LoadDroneChainResponse loadDroneChainResponse) {
+        Address address = addressRepository.findById(loadDroneRequest.getAddressId()).orElseThrow(() -> new ValidationException("Can not find a Address"));
         loadDroneChainResponse.setAddress(address);
-        return validateNext(loadDroneDTO, loadDroneChainResponse);
+        return validateNext(loadDroneRequest, loadDroneChainResponse);
     }
 
     @Override

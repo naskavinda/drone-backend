@@ -1,7 +1,7 @@
 package com.interview.drone.backend.controller;
 
 import com.interview.drone.backend.dto.DroneResponse;
-import com.interview.drone.backend.dto.LoadDroneDTO;
+import com.interview.drone.backend.dto.LoadDroneRequest;
 import com.interview.drone.backend.dto.LoadedMedicationResponse;
 import com.interview.drone.backend.entity.Drone;
 import com.interview.drone.backend.service.DroneService;
@@ -29,7 +29,7 @@ public class DroneController {
     }
 
     @PostMapping("/medication")
-    private ResponseEntity<Map<String, String>> loadMedication(@Valid @RequestBody LoadDroneDTO loadDrone) {
+    private ResponseEntity<Map<String, String>> loadMedication(@Valid @RequestBody LoadDroneRequest loadDrone) {
         droneService.loadMedicationToDrone(loadDrone);
         return ResponseEntity.ok(Map.of());
     }
