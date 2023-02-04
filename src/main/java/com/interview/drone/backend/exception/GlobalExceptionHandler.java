@@ -7,6 +7,7 @@ import lombok.Builder;
 import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -35,6 +36,11 @@ public class GlobalExceptionHandler {
                 .toList();
 
         return ResponseEntity.badRequest().body(errors);
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<Map<String, String>> handleMethodArgumentNotValidError(MethodArgumentNotValidException exception) {
+        return ResponseEntity.badRequest().body(Map.of("error", exception.getLocalizedMessage()));
     }
 
     @ExceptionHandler(HttpMessageNotReadableException.class)

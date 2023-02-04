@@ -6,10 +6,12 @@ spring:
         format_sql: true
     hibernate:
       ddl-auto: create
+    defer-datasource-initialization: true
   datasource:
     url: jdbc:mysql://localhost:3306/drone
     username: root
     password: password
+    platform: mysql
   sql:
     init:
       mode: always

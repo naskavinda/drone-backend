@@ -40,7 +40,7 @@ public class Drone {
 
     @JsonIgnore
     @OneToMany(mappedBy = "drone")
-    Set<DeliveryDetails> deliveryDetails;
+    Set<Delivery> deliveries;
 
     private static class DroneModelConverter implements AttributeConverter<DroneModel, Integer> {
         @Override
