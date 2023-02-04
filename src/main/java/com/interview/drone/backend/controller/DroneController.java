@@ -45,4 +45,10 @@ public class DroneController {
         List<DroneResponse> droneResponseList = droneService.getAvailableDrones();
         return ResponseEntity.ok(droneResponseList);
     }
+
+    @GetMapping("/{serialNumber}/batteryLevel")
+    private ResponseEntity<Map<String, Double>> getBatteryLevelByDrone(@PathVariable String serialNumber){
+        double batteryLevel = droneService.getBatteryLevelByDrone(serialNumber);
+        return ResponseEntity.ok(Map.of("batteryLevel", batteryLevel));
+    }
 }

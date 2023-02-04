@@ -110,6 +110,13 @@ public class DroneServiceImpl implements DroneService {
                 .toList();
     }
 
+    @Override
+    public double getBatteryLevelByDrone(String serialNumber) {
+        Drone drone = droneRepository.findById(serialNumber)
+                .orElseThrow(() -> new ValidationException("Drone not found"));
+        return drone.getBatteryCapacity();
+    }
+
     private static Medication getMedication(List<Medication> medications, MedicationDTO medicationDTO) {
         return medications.stream()
                 .filter(medication -> Objects.equals(medication.getCode(), medicationDTO.getMedicationCode()))

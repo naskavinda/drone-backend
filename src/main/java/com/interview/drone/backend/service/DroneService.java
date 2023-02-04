@@ -15,4 +15,6 @@ public interface DroneService {
     List<LoadedMedicationResponse> getMedicationByDrone(String serialNumber);
 
     List<DroneResponse> getAvailableDrones();
+
+    double getBatteryLevelByDrone(String serialNumber);
 }
