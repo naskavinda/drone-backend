@@ -52,9 +52,10 @@ public class DroneServiceImpl implements DroneService {
 
         LoadDroneChainResponse validationResponse = droneValidator.validate(loadDrone, new LoadDroneChainResponse());
 
+        Drone drone = validationResponse.getDrone();
         Delivery delivery = Delivery.builder()
                 .address(validationResponse.getAddress())
-                .drone(validationResponse.getDrone())
+                .drone(drone)
                 .totalWeight(validationResponse.getTotalWeight())
                 .build();
         Delivery deliverySaved = deliveryRepository.save(delivery);
@@ -67,6 +68,9 @@ public class DroneServiceImpl implements DroneService {
                         .build())
                 .toList();
         deliveryDetailsRepository.saveAll(deliveryDetails);
+
+        drone.setDroneState(DroneState.valueOf(loadDrone.getDroneState()));
+        droneRepository.save(drone);
     }
 
     private static Medication getMedication(List<Medication> medications, MedicationDTO medicationDTO) {

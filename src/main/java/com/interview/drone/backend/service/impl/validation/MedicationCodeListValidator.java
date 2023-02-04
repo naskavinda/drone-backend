@@ -9,6 +9,8 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+import static com.interview.drone.backend.service.impl.validation.LoadDroneValidatorChainOrder.MEDICATION_CODE_LIST_VALIDATOR_ORDER;
+
 @Component
 public class MedicationCodeListValidator extends LoadDroneValidator {
 
@@ -31,6 +33,6 @@ public class MedicationCodeListValidator extends LoadDroneValidator {
 
     @Override
     public int getOrder() {
-        return 2;
+        return MEDICATION_CODE_LIST_VALIDATOR_ORDER;
     }
 }

@@ -9,6 +9,8 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 import java.util.Objects;
 
+import static com.interview.drone.backend.service.impl.validation.LoadDroneValidatorChainOrder.WEIGHT_LIMIT_VALIDATOR_ORDER;
+
 @Component
 public class WeightLimitValidator extends LoadDroneValidator{
     @Override
@@ -35,6 +37,6 @@ public class WeightLimitValidator extends LoadDroneValidator{
 
     @Override
     public int getOrder() {
-        return 5;
+        return WEIGHT_LIMIT_VALIDATOR_ORDER;
     }
 }

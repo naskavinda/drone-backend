@@ -6,6 +6,8 @@ import com.interview.drone.backend.repository.AddressRepository;
 import jakarta.validation.ValidationException;
 import org.springframework.stereotype.Component;
 
+import static com.interview.drone.backend.service.impl.validation.LoadDroneValidatorChainOrder.ADDRESS_ID_VALIDATOR_ORDER;
+
 @Component
 public class AddressIdValidator extends LoadDroneValidator{
 
@@ -24,6 +26,6 @@ public class AddressIdValidator extends LoadDroneValidator{
 
     @Override
     public int getOrder() {
-        return 3;
+        return ADDRESS_ID_VALIDATOR_ORDER;
     }
 }

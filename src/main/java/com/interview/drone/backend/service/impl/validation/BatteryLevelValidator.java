@@ -4,6 +4,8 @@ import com.interview.drone.backend.dto.LoadDroneDTO;
 import jakarta.validation.ValidationException;
 import org.springframework.stereotype.Component;
 
+import static com.interview.drone.backend.service.impl.validation.LoadDroneValidatorChainOrder.BATTERY_LEVEL_VALIDATOR_ORDER;
+
 @Component
 public class BatteryLevelValidator extends LoadDroneValidator {
 
@@ -20,6 +22,6 @@ public class BatteryLevelValidator extends LoadDroneValidator {
 
     @Override
     public int getOrder() {
-        return 4;
+        return BATTERY_LEVEL_VALIDATOR_ORDER;
     }
 }

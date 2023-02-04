@@ -6,6 +6,8 @@ import com.interview.drone.backend.repository.DroneRepository;
 import jakarta.validation.ValidationException;
 import org.springframework.stereotype.Component;
 
+import static com.interview.drone.backend.service.impl.validation.LoadDroneValidatorChainOrder.DRONE_SERIAL_NUMBER_VALIDATOR_ORDER;
+
 @Component
 public class DroneSerialNumberValidator extends LoadDroneValidator {
 
@@ -25,6 +27,6 @@ public class DroneSerialNumberValidator extends LoadDroneValidator {
 
     @Override
     public int getOrder() {
-        return 1;
+        return DRONE_SERIAL_NUMBER_VALIDATOR_ORDER;
     }
 }
