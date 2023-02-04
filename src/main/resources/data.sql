@@ -11,3 +11,35 @@ INSERT INTO `drone`.`address` (`address_id`, `city`, `country`, `latitude`, `lin
  VALUES ('1', 'Beliatta', 'Sri Lanka', '77.20N', '51A', '', '85.325E'),
  ('2', 'Colombo', 'Sri Lanka', '72.20N', '55 A, Colombo 10', '', '81.325E'),
  ('3', 'Colombo', 'Sri Lanka', '73.20N', '121/2 , Colombo 5', '', '81.325E');
+
+insert
+    into
+        `drone`.`drone`
+        (`battery_capacity`, `drone_model`, `drone_state`, `weight_limit_in_gram`, `serial_number`)
+    values
+        (100, '1', '3', 500, '111'),
+        (100, '2', '2', 500, '222'),
+        (100, '3', '1', 500, '333');
+
+insert
+    into
+        delivery
+        (address_id, serial_number, total_weight)
+    values
+        (1, '111', 130),
+        (1, '222', 295),
+        (2, '111', 385);
+
+
+insert
+    into
+        delivery_details
+        (delivery_id, code, medication_qty)
+    values
+        (1, 'MD_1', 3),
+        (1, 'MD_2', 5),
+        (2, 'MD_3', 3),
+        (2, 'MD_4', 5),
+        (3, 'MD_5', 5),
+        (3, 'MD_6', 3),
+        (3, 'MD_7', 1);

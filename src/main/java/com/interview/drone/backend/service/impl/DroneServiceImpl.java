@@ -1,6 +1,7 @@
 package com.interview.drone.backend.service.impl;
 
 import com.interview.drone.backend.dto.LoadDroneDTO;
+import com.interview.drone.backend.dto.LoadedMedicationResponse;
 import com.interview.drone.backend.dto.MedicationDTO;
 import com.interview.drone.backend.entity.*;
 import com.interview.drone.backend.repository.*;
@@ -71,6 +72,26 @@ public class DroneServiceImpl implements DroneService {
 
         drone.setDroneState(DroneState.valueOf(loadDrone.getDroneState()));
         droneRepository.save(drone);
+    }
+
+    @Override
+    public List<LoadedMedicationResponse> getMedicationByDrone(String serialNumber) {
+        Drone drone = droneRepository.findById(serialNumber)
+                .orElseThrow(() -> new ValidationException("Drone not found"));
+
+        List<DroneState> loadedDroneStates = List.of(DroneState.LOADING, DroneState.LOADED, DroneState.DELIVERING);
+        if (!loadedDroneStates.contains(drone.getDroneState())) {
+            throw new ValidationException("No Loaded medication items");
+        }
+
+        Delivery delivery = deliveryRepository.findTopByDroneSerialNumberOrderByDeliveryIdDesc(serialNumber);
+        List<DeliveryDetails> deliveryDetails = deliveryDetailsRepository.findByDeliveryDeliveryId(delivery.getDeliveryId());
+        return deliveryDetails.stream()
+                .map(deliveryDetail -> LoadedMedicationResponse.builder()
+                        .medicationCode(deliveryDetail.getMedication().getCode())
+                        .medicationQty(deliveryDetail.getMedicationQty())
+                        .build())
+                .toList();
     }
 
     private static Medication getMedication(List<Medication> medications, MedicationDTO medicationDTO) {

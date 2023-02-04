@@ -1,20 +1,18 @@
 package com.interview.drone.backend.controller;
 
 import com.interview.drone.backend.dto.LoadDroneDTO;
+import com.interview.drone.backend.dto.LoadedMedicationResponse;
 import com.interview.drone.backend.entity.Drone;
 import com.interview.drone.backend.service.DroneService;
 import jakarta.validation.Valid;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping(value = "/api/drone", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/api/drone")
 public class DroneController {
 
     private final DroneService droneService;
@@ -29,9 +27,15 @@ public class DroneController {
         return ResponseEntity.ok(droneResult);
     }
 
-    @PostMapping("/load")
+    @PostMapping("/medication")
     private ResponseEntity<Map<String, String>> loadMedication(@Valid @RequestBody LoadDroneDTO loadDrone) {
         droneService.loadMedicationToDrone(loadDrone);
         return ResponseEntity.ok(Map.of());
+    }
+
+    @GetMapping("/{serialNumber}/medication")
+    private ResponseEntity<List<LoadedMedicationResponse>> getMedicationByDrone(@PathVariable String serialNumber) {
+        List<LoadedMedicationResponse> loadedMedicationResponses = droneService.getMedicationByDrone(serialNumber);
+        return ResponseEntity.ok(loadedMedicationResponses);
     }
 }

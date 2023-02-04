@@ -19,6 +19,7 @@ public class WeightLimitValidator extends LoadDroneValidator{
         if (totalWeight > loadDroneChainResponse.getDrone().getWeightLimitInGram()) {
             throw new ValidationException("Total Weight can not exceed the weight limit of the drone");
         }
+        loadDroneChainResponse.setTotalWeight(totalWeight);
         return validateNext(loadDroneDTO, loadDroneChainResponse);
     }
 
