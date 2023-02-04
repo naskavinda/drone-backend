@@ -38,6 +38,7 @@ public class DroneServiceImpl implements DroneService {
         if (droneIsAlreadyPresent) {
             throw new ValidationException("Drone is already exist");
         }
+        drone.setDroneState(DroneState.IDLE);
         return droneRepository.save(drone);
     }
 

@@ -34,8 +34,8 @@ public class Drone {
     @Min(value = 0, message = "Battery Capacity min value is 0")
     private int batteryCapacity;
 
+    @JsonIgnore
     @Convert(converter = DroneStateConverter.class)
-    @NotNull(message = "Drone State can not be Null")
     private DroneState droneState;
 
     @JsonIgnore
