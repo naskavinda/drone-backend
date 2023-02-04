@@ -1,5 +1,6 @@
 package com.interview.drone.backend.service.impl;
 
+import com.interview.drone.backend.dto.DroneResponse;
 import com.interview.drone.backend.dto.LoadDroneDTO;
 import com.interview.drone.backend.dto.LoadedMedicationResponse;
 import com.interview.drone.backend.dto.MedicationDTO;
@@ -79,8 +80,8 @@ public class DroneServiceImpl implements DroneService {
         Drone drone = droneRepository.findById(serialNumber)
                 .orElseThrow(() -> new ValidationException("Drone not found"));
 
-        List<DroneState> loadedDroneStates = List.of(DroneState.LOADING, DroneState.LOADED, DroneState.DELIVERING);
-        if (!loadedDroneStates.contains(drone.getDroneState())) {
+        List<DroneState> loadedDroneStateList = List.of(DroneState.LOADING, DroneState.LOADED, DroneState.DELIVERING);
+        if (!loadedDroneStateList.contains(drone.getDroneState())) {
             throw new ValidationException("No Loaded medication items");
         }
 
@@ -90,6 +91,21 @@ public class DroneServiceImpl implements DroneService {
                 .map(deliveryDetail -> LoadedMedicationResponse.builder()
                         .medicationCode(deliveryDetail.getMedication().getCode())
                         .medicationQty(deliveryDetail.getMedicationQty())
+                        .build())
+                .toList();
+    }
+
+    @Override
+    public List<DroneResponse> getAvailableDrones() {
+        List<DroneState> availableDroneStateList = List.of(DroneState.IDLE, DroneState.LOADING);
+        List<Drone> droneList = droneRepository.findByDroneStateIn(availableDroneStateList);
+        return droneList.stream()
+                .map(drone -> DroneResponse.builder()
+                        .serialNumber(drone.getSerialNumber())
+                        .droneModel(drone.getDroneModel())
+                        .droneState(drone.getDroneState())
+                        .batteryCapacity(drone.getBatteryCapacity())
+                        .weightLimit(drone.getWeightLimitInGram())
                         .build())
                 .toList();
     }

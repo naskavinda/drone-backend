@@ -1,5 +1,6 @@
 package com.interview.drone.backend.controller;
 
+import com.interview.drone.backend.dto.DroneResponse;
 import com.interview.drone.backend.dto.LoadDroneDTO;
 import com.interview.drone.backend.dto.LoadedMedicationResponse;
 import com.interview.drone.backend.entity.Drone;
@@ -37,5 +38,11 @@ public class DroneController {
     private ResponseEntity<List<LoadedMedicationResponse>> getMedicationByDrone(@PathVariable String serialNumber) {
         List<LoadedMedicationResponse> loadedMedicationResponses = droneService.getMedicationByDrone(serialNumber);
         return ResponseEntity.ok(loadedMedicationResponses);
+    }
+
+    @GetMapping("/available")
+    private ResponseEntity<List<DroneResponse>> getAvailableDrones(){
+        List<DroneResponse> droneResponseList = droneService.getAvailableDrones();
+        return ResponseEntity.ok(droneResponseList);
     }
 }
