@@ -25,16 +25,17 @@ public class DroneController {
     }
 
     @PostMapping()
-    private ResponseEntity<DroneResponse> registerDrone(@Validated @RequestBody RegisterDroneRequest drone) {
-        DroneResponse droneResult = droneService.registerDrone(drone);
-        if (droneResult != null) {
+    ResponseEntity<DroneResponse> registerDrone(@Validated @RequestBody RegisterDroneRequest drone) {
+        try {
+            DroneResponse droneResult = droneService.registerDrone(drone);
             return ResponseEntity.status(HttpStatus.CREATED).body(droneResult);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(null);
         }
-        return ResponseEntity.badRequest().body(null);
     }
 
     @PostMapping("/medications")
-    private ResponseEntity<Map<String, String>> loadMedication(@Valid @RequestBody LoadDroneRequest loadDrone) {
+    ResponseEntity<Map<String, String>> loadMedication(@Valid @RequestBody LoadDroneRequest loadDrone) {
         try {
             droneService.loadMedicationToDrone(loadDrone);
             return ResponseEntity.ok(Map.of("message", "Medication loaded successfully!"));
@@ -44,20 +45,32 @@ public class DroneController {
     }
 
     @GetMapping("/{serialNumber}/medications")
-    private ResponseEntity<List<LoadedMedicationResponse>> getMedicationByDrone(@PathVariable String serialNumber) {
-        List<LoadedMedicationResponse> loadedMedicationResponses = droneService.getMedicationByDrone(serialNumber);
-        return ResponseEntity.ok(loadedMedicationResponses);
+    ResponseEntity<List<LoadedMedicationResponse>> getMedicationByDrone(@PathVariable String serialNumber) {
+        try {
+            List<LoadedMedicationResponse> loadedMedicationResponses = droneService.getMedicationByDrone(serialNumber);
+            return ResponseEntity.ok(loadedMedicationResponses);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(null);
+        }
     }
 
     @GetMapping("/available")
-    private ResponseEntity<List<DroneResponse>> getAvailableDrones() {
-        List<DroneResponse> droneResponseList = droneService.getAvailableDrones();
-        return ResponseEntity.ok(droneResponseList);
+    ResponseEntity<List<DroneResponse>> getAvailableDrones() {
+        try {
+            List<DroneResponse> droneResponseList = droneService.getAvailableDrones();
+            return ResponseEntity.ok(droneResponseList);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(null);
+        }
     }
 
     @GetMapping("/{serialNumber}/batteryLevel")
-    private ResponseEntity<Map<String, Double>> getBatteryLevelByDrone(@PathVariable String serialNumber) {
-        double batteryLevel = droneService.getBatteryLevelByDrone(serialNumber);
-        return ResponseEntity.ok(Map.of("batteryLevel", batteryLevel));
+    ResponseEntity<Map<String, Double>> getBatteryLevelByDrone(@PathVariable String serialNumber) {
+        try {
+            double batteryLevel = droneService.getBatteryLevelByDrone(serialNumber);
+            return ResponseEntity.ok(Map.of("batteryLevel", batteryLevel));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(null);
+        }
     }
 }
