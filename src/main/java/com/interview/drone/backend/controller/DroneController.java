@@ -6,6 +6,7 @@ import com.interview.drone.backend.dto.LoadedMedicationResponse;
 import com.interview.drone.backend.dto.RegisterDroneRequest;
 import com.interview.drone.backend.service.DroneService;
 import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -26,29 +27,36 @@ public class DroneController {
     @PostMapping()
     private ResponseEntity<DroneResponse> registerDrone(@Validated @RequestBody RegisterDroneRequest drone) {
         DroneResponse droneResult = droneService.registerDrone(drone);
-        return ResponseEntity.ok(droneResult);
+        if (droneResult != null) {
+            return ResponseEntity.status(HttpStatus.CREATED).body(droneResult);
+        }
+        return ResponseEntity.badRequest().body(null);
     }
 
-    @PostMapping("/medication")
+    @PostMapping("/medications")
     private ResponseEntity<Map<String, String>> loadMedication(@Valid @RequestBody LoadDroneRequest loadDrone) {
-        droneService.loadMedicationToDrone(loadDrone);
-        return ResponseEntity.ok(Map.of());
+        try {
+            droneService.loadMedicationToDrone(loadDrone);
+            return ResponseEntity.ok(Map.of("message", "Medication loaded successfully!"));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(Map.of("message", "Loading medication failed!"));
+        }
     }
 
-    @GetMapping("/{serialNumber}/medication")
+    @GetMapping("/{serialNumber}/medications")
     private ResponseEntity<List<LoadedMedicationResponse>> getMedicationByDrone(@PathVariable String serialNumber) {
         List<LoadedMedicationResponse> loadedMedicationResponses = droneService.getMedicationByDrone(serialNumber);
         return ResponseEntity.ok(loadedMedicationResponses);
     }
 
     @GetMapping("/available")
-    private ResponseEntity<List<DroneResponse>> getAvailableDrones(){
+    private ResponseEntity<List<DroneResponse>> getAvailableDrones() {
         List<DroneResponse> droneResponseList = droneService.getAvailableDrones();
         return ResponseEntity.ok(droneResponseList);
     }
 
     @GetMapping("/{serialNumber}/batteryLevel")
-    private ResponseEntity<Map<String, Double>> getBatteryLevelByDrone(@PathVariable String serialNumber){
+    private ResponseEntity<Map<String, Double>> getBatteryLevelByDrone(@PathVariable String serialNumber) {
         double batteryLevel = droneService.getBatteryLevelByDrone(serialNumber);
         return ResponseEntity.ok(Map.of("batteryLevel", batteryLevel));
     }
