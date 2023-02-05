@@ -8,14 +8,14 @@ import java.util.Map;
 import java.util.Random;
 
 @Component
-public class BatteryLevelInMemoryService implements BatteryLevelService {
+public class InMemoryBatteryLevelService implements BatteryLevelService {
 
     private final Map<String, Integer> batteryLevels = new HashMap<>();
     private final Random random = new Random();
 
     public int getDroneBatteryLevel(String droneId, String state) {
         int previousBatteryLevel = getPreviousBatteryLevel(droneId);
-        int currentBatteryLevel = previousBatteryLevel;
+        int currentBatteryLevel;
 
         if (state.equals("IDLE")) {
             currentBatteryLevel = previousBatteryLevel + random.nextInt(100 - previousBatteryLevel + 1);
