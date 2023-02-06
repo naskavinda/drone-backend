@@ -42,7 +42,7 @@ class DroneControllerTest {
     ObjectMapper objectMapper = new ObjectMapper();
 
     @Test
-    void shouldReturnHttpStatusCreated_whenInputIsValid_forRegisterDrone() throws Exception {
+    void registerDrone_whenInputIsValid_thenReturnHttpStatusCreated() throws Exception {
 
         DroneResponse response = new DroneResponse();
         response.setSerialNumber("1234");
@@ -65,7 +65,7 @@ class DroneControllerTest {
     }
 
     @Test
-    void shouldReturnHttpStatusBadRequest_whenInputIsInValid_forRegisterDrone() throws Exception {
+    void registerDrone_whenInputIsInValid_thenReturnHttpStatusBadRequest() throws Exception {
 
         MvcResult result = mockMvc
                 .perform(post("/api/drone")
