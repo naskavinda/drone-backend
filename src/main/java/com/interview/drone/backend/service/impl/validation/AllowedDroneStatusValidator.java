@@ -17,7 +17,7 @@ public class AllowedDroneStatusValidator extends LoadDroneValidator {
     @Override
     public LoadDroneChainResponse validate(LoadDroneRequest loadDroneRequest, LoadDroneChainResponse loadDroneChainResponse) {
         if (!LOADING_ALLOWED_DRONE_STATES.contains(loadDroneChainResponse.getDrone().getDroneState())) {
-            throw new ValidationException("Can not load Medication to the this drone.");
+            throw new ValidationException("Can not load Medication to the this drone");
         }
         return validateNext(loadDroneRequest, loadDroneChainResponse);
     }
