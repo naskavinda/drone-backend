@@ -19,7 +19,8 @@ public class AddressIdValidator extends LoadDroneValidator{
 
     @Override
     public LoadDroneChainResponse validate(LoadDroneRequest loadDroneRequest, LoadDroneChainResponse loadDroneChainResponse) {
-        Address address = addressRepository.findById(loadDroneRequest.getAddressId()).orElseThrow(() -> new ValidationException("Can not find a Address"));
+        Address address = addressRepository.findById(loadDroneRequest.getAddressId())
+                .orElseThrow(() -> new ValidationException("Can not find a Address"));
         loadDroneChainResponse.setAddress(address);
         return validateNext(loadDroneRequest, loadDroneChainResponse);
     }
