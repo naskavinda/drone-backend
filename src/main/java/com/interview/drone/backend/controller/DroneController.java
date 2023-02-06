@@ -5,7 +5,6 @@ import com.interview.drone.backend.dto.LoadDroneRequest;
 import com.interview.drone.backend.dto.LoadedMedicationResponse;
 import com.interview.drone.backend.dto.RegisterDroneRequest;
 import com.interview.drone.backend.service.DroneService;
-import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -35,7 +34,7 @@ public class DroneController {
     }
 
     @PostMapping("/medications")
-    ResponseEntity<Map<String, String>> loadMedication(@Valid @Validated @RequestBody LoadDroneRequest loadDrone) {
+    ResponseEntity<Map<String, String>> loadMedication(@Validated @RequestBody LoadDroneRequest loadDrone) {
         try {
             droneService.loadMedicationToDrone(loadDrone);
             return ResponseEntity.ok(Map.of("message", "Medication loaded successfully!"));
