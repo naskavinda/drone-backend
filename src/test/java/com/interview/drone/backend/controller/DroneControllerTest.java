@@ -2,6 +2,8 @@ package com.interview.drone.backend.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.interview.drone.backend.dto.DroneResponse;
+import com.interview.drone.backend.dto.LoadDroneRequest;
+import com.interview.drone.backend.dto.MedicationRequest;
 import com.interview.drone.backend.dto.RegisterDroneRequest;
 import com.interview.drone.backend.entity.DroneModel;
 import com.interview.drone.backend.entity.DroneState;
@@ -15,9 +17,14 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -72,5 +79,48 @@ class DroneControllerTest {
         assertThat(result.getResponse().getStatus()).isEqualTo(400);
     }
 
+    @Test
+    void loadMedication_whenInputIsValid_thenReturnHttpStatusOK() throws Exception {
+
+        LoadDroneRequest response = LoadDroneRequest.builder()
+                .addressId(1)
+                .droneSerialNumber("111")
+                .droneState(DroneState.IDLE.toString())
+                .medications(
+                        List.of(
+                                MedicationRequest.builder()
+                                        .medicationCode("MD_5")
+                                        .medicationQty(5)
+                                        .build()
+                        )
+                )
+                .build();
+        doNothing().when(droneService).loadMedicationToDrone(any(LoadDroneRequest.class));
+        MvcResult result = mockMvc
+                .perform(post("/api/drone/medications")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"medications\":[{\"medicationCode\":\"MD_5\",\"medicationQty\":5}],\"addressId\":1,\"droneSerialNumber\":\"333\",\"droneState\":\"LOADING\"}"))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        Map<String, String> droneResponse = objectMapper.readValue(result.getResponse().getContentAsString(), HashMap.class);
+        assertThat(droneResponse.get("message")).isEqualTo("Medication loaded successfully!");
+        assertThat(result.getResponse().getStatus()).isEqualTo(200);
+    }
+
+    @Test
+    void loadMedication_whenInputIsInValid_thenReturnHttpStatusBadRequest() throws Exception {
+        LoadDroneRequest loadDrone = new LoadDroneRequest();
+        doThrow(new RuntimeException()).when(droneService).loadMedicationToDrone(loadDrone);
+        MvcResult result = mockMvc
+                .perform(post("/api/drone/medications")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"medications\":[{\"medicationCode\":\"MD_1\",\"medicationQty\":-5}],\"addressId\":1,\"droneSerialNumber\":\"333\",\"droneState\":\"IDLE\"}"))
+                .andExpect(status().isBadRequest())
+                .andReturn();
+        String actualResponse = result.getResponse().getContentAsString();
+        assertEquals(400, result.getResponse().getStatus());
+        assertEquals("{\"medications[0].medicationQty\":\"Medication quantity minimum value is 1\",\"droneState\":\"Drone State must be LOADING or LOADED.\"}", actualResponse);
+    }
 
 }

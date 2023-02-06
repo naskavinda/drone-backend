@@ -35,7 +35,7 @@ public class DroneController {
     }
 
     @PostMapping("/medications")
-    ResponseEntity<Map<String, String>> loadMedication(@Valid @RequestBody LoadDroneRequest loadDrone) {
+    ResponseEntity<Map<String, String>> loadMedication(@Valid @Validated @RequestBody LoadDroneRequest loadDrone) {
         try {
             droneService.loadMedicationToDrone(loadDrone);
             return ResponseEntity.ok(Map.of("message", "Medication loaded successfully!"));
