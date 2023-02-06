@@ -25,21 +25,8 @@ docker-compose -f docker/docker-compose.yml up
 ./mvnw spring-boot:run
 ```
 
-**Node: You can add below command to skip unit test and integration test**
-
-- `-DskipTests` skips both unit and integration tests
-- `-DskipUnitTests` skips unit tests but executes integration tests
-- `-DskipIntegrationTests` skips integration tests but executes unit tests
-
-
 * You can run Unit test using command in below,
 
 ```
 ./mvnw clean test
-```
-
-* You can run integration test using command in below,
-
-```
-./mvnw failsafe:integration-test
 ```
