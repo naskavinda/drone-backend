@@ -30,3 +30,5 @@ docker-compose -f docker/docker-compose.yml up
 ```
 ./mvnw clean test
 ```
+
+* you can find log file in the `log` directory in the project root folder. 
