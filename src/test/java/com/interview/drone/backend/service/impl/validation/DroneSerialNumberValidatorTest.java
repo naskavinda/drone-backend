@@ -39,10 +39,10 @@ class DroneSerialNumberValidatorTest {
                 .build();
         when(droneRepository.findById(loadDroneRequest.getDroneSerialNumber())).thenReturn(Optional.of(drone));
 
-        droneSerialNumberValidator.validate(loadDroneRequest, loadDroneChainResponse);
+        LoadDroneChainResponse validatedResponse = droneSerialNumberValidator.validate(loadDroneRequest, loadDroneChainResponse);
 
         verify(droneRepository).findById(loadDroneRequest.getDroneSerialNumber());
-        assertEquals(loadDroneChainResponse.getDrone(), drone);
+        assertEquals(validatedResponse.getDrone(), drone);
     }
 
 

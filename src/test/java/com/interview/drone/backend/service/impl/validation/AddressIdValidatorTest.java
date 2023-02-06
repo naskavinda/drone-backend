@@ -38,10 +38,10 @@ class AddressIdValidatorTest {
 
         when(addressRepository.findById(loadDroneRequest.getAddressId())).thenReturn(Optional.of(address));
 
-        addressIdValidator.validate(loadDroneRequest, loadDroneChainResponse);
+        LoadDroneChainResponse validatedResponse = addressIdValidator.validate(loadDroneRequest, loadDroneChainResponse);
 
         verify(addressRepository).findById(loadDroneRequest.getAddressId());
-        assertEquals(loadDroneChainResponse.getAddress(), address);
+        assertEquals(validatedResponse.getAddress(), address);
     }
 
     @Test
