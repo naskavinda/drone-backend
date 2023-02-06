@@ -15,7 +15,7 @@ public class BatteryLevelValidator extends LoadDroneValidator {
     public LoadDroneChainResponse validate(LoadDroneRequest loadDroneRequest, LoadDroneChainResponse loadDroneChainResponse) {
         int batteryCapacity = loadDroneChainResponse.getDrone().getBatteryCapacity();
         if (batteryCapacity < ALLOWED_MIN_BATTERY_CAPACITY) {
-            throw new ValidationException("Battery level must be above 25%");
+            throw new ValidationException("Battery level must be equal or higher that 25%");
         }
         return validateNext(loadDroneRequest, loadDroneChainResponse);
     }
